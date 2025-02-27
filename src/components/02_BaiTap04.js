@@ -1,6 +1,8 @@
 import React from "react";
 import movies from "../movies";
 import { Link } from "react-router-dom";
+import { div, g, title } from "framer-motion/client";
+import { useState } from "react";
 const styles = {
   card: {
     borderRadius: "16px",
@@ -65,9 +67,12 @@ const styles = {
 let Movies = movies
 
 const MovieCards = () => {
-  
-  const [renderMovies, setRenderMovies] = React.useState(Movies);
-
+  const [renderMovies, setRenderMovies] = useState(Movies);
+  const [selectedGenres, setSelectedGenres] = useState([]);
+  const [searchTerm, setSearchTerm] = useState({
+    title: "",
+    genre: "",
+  });
   const handleSubmit = (e) => {
     e.preventDefault();
     const newMovie = ({
@@ -107,6 +112,64 @@ const MovieCards = () => {
     );
   }
 
+  const getAllGenres = (movies) => {
+    const genres = movies.reduce((acc, movie) => {
+      movie.genre.forEach((genre) => {
+        if (!acc.includes(genre)) {
+          acc.push(genre);
+        }
+      });
+      return acc;
+    }, []);
+    return genres;
+  };
+
+  const handleGenreChange = (genre) => {
+    let updatedGenres;
+    if (searchTerm.genre.includes(genre)) {
+      updatedGenres = searchTerm.genre.filter((g) => g !== genre);
+    } else {
+      updatedGenres = [...searchTerm.genre, genre];
+    }
+    setSearchTerm((prev) => ({
+      ...prev,
+      genre: updatedGenres
+    }));
+
+    if (updatedGenres.length > 0) {
+      const filteredMovies = Movies.filter((movie) =>
+        updatedGenres.some((g) => movie.genre.includes(g))
+      );
+      setRenderMovies(filteredMovies);
+    } else {
+      setRenderMovies(Movies);
+    }
+  };
+
+  const FilterMovie = () => {
+    const allGenres = getAllGenres(Movies);
+    return (
+      <div className="d-flex gap-2 justify-center flex-wrap w-[40%] mx-[auto]" >
+        {allGenres.map((genre) => (
+          <div key={genre}>
+            <input
+              name={genre}
+              type="checkbox"
+              className="btn-check"
+              id={`btn-check-${genre}`}
+              autoComplete="off"
+              checked={searchTerm.genre.includes(genre)}
+              onChange={() => handleGenreChange(genre)}
+            />
+            <label className="btn btn-outline-primary rounded-xl" htmlFor={`btn-check-${genre}`}>
+              {genre}
+            </label>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <div>
       <h1 style={{ textAlign: "center", color: "white" }}>Popular Movies</h1>
@@ -114,6 +177,8 @@ const MovieCards = () => {
         <input type="text" placeholder="Search movies" style={{ width: "40%", padding: "8px", borderRadius: "12px", border: "1px solid #1f2937", marginBottom: "16px" }} 
         onChange={(e)=>{setRenderMovies(searchMovies(Movies,e.target.value))}} />
       </div>
+
+      <FilterMovie/>
 
       <FormAddMovie></FormAddMovie>
 
