@@ -184,7 +184,7 @@ const MovieCards = () => {
 
   return (
     <div>
-      <h1 className="font-bold text-3xl" style={{ textAlign: "center", color: "black" }}>Movies</h1>
+      <h1 className="font-bold text-3xl" style={{ textAlign: "center", color: "black" }}>Delete Page</h1>
       <div className="my-4" style={{display:"flex", justifyContent:"center"}}>
         <input type="text" placeholder="Search movies" style={{ width: "40%", padding: "8px", borderRadius: "12px", border: "1px solid #1f2937", marginBottom: "4px" }} 
         onChange={(e)=>{

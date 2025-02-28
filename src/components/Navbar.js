@@ -14,10 +14,10 @@ const NavBar = () => {
               `px-4 py-2 rounded-lg transition-all duration-300 ${isActive ? "bg-white text-blue-600 shadow-md" : "hover:bg-blue-700 hover:text-white"}`
             }
           >
-            Products
+            Movies
           </NavLink>
           <NavLink
-            to="/search-product"
+            to="/search-movies"
             className={({ isActive }) =>
               `px-4 py-2 rounded-lg transition-all duration-300 ${isActive ? "bg-white text-blue-600 shadow-md" : "hover:bg-blue-700 hover:text-white"}`
             }
@@ -25,7 +25,7 @@ const NavBar = () => {
             Search
           </NavLink>
           <NavLink
-            to="/filter-product"
+            to="/filter-movies"
             className={({ isActive }) =>
               `px-4 py-2 rounded-lg transition-all duration-300 ${isActive ? "bg-white text-blue-600 shadow-md" : "hover:bg-blue-700 hover:text-white"}`
             }
@@ -33,7 +33,7 @@ const NavBar = () => {
             Filter
           </NavLink>
           <NavLink
-            to="/add-product"
+            to="/add-movie"
             className={({ isActive }) =>
               `px-4 py-2 rounded-lg transition-all duration-300 ${isActive ? "bg-white text-blue-600 shadow-md" : "hover:bg-blue-700 hover:text-white"}`
             }
@@ -41,7 +41,7 @@ const NavBar = () => {
             Add
           </NavLink>
           <NavLink
-            to="/update-product"
+            to="/update-movie"
             className={({ isActive }) =>
               `px-4 py-2 rounded-lg transition-all duration-300 ${isActive ? "bg-white text-blue-600 shadow-md" : "hover:bg-blue-700 hover:text-white"}`
             }
@@ -49,7 +49,7 @@ const NavBar = () => {
             Update
           </NavLink>
           <NavLink
-            to="/delete-product"
+            to="/delete-movie"
             className={({ isActive }) =>
               `px-4 py-2 rounded-lg transition-all duration-300 ${isActive ? "bg-white text-blue-600 shadow-md" : "hover:bg-blue-700 hover:text-white"}`
             }

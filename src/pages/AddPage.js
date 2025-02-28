@@ -87,8 +87,8 @@ const MovieCards = () => {
     });
 
     Movies = addMovie(Movies, newMovie);
-    console.log(Movies);
     setRenderMovies(Movies);
+    return (alert("Add movie successfully!"));
   };
 
   const FormAddMovie = () => {
@@ -184,7 +184,7 @@ const MovieCards = () => {
 
   return (
     <div>
-      <h1 className="font-bold text-3xl" style={{ textAlign: "center", color: "black" }}>Movies</h1>
+      <h1 className="font-bold text-3xl" style={{ textAlign: "center", color: "black" }}>Add Movies</h1>
       <div className="my-4" style={{display:"flex", justifyContent:"center"}}>
         <input type="text" placeholder="Search movies" style={{ width: "40%", padding: "8px", borderRadius: "12px", border: "1px solid #1f2937", marginBottom: "4px" }} 
         onChange={(e)=>{
@@ -194,7 +194,7 @@ const MovieCards = () => {
 
       <FilterMovie/>
 
-      {/* <FormAddMovie></FormAddMovie> */}
+      <FormAddMovie></FormAddMovie>
       {renderMovies.length <= 0 && <h2 style={{ textAlign: "center", color: "black" }}>No movies found</h2>}
 
       <div className="my-4" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "16px" }}>
