@@ -1,7 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import movies from "../movies";
 import Button from 'react-bootstrap/Button';
-import { div } from "framer-motion/client";
 
 const MovieDetail = () => {
   const { id } = useParams();

@@ -11,9 +11,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#1E40AF", // Màu xanh dương
-        secondary: "#F59E0B", // Màu vàng
+        primary: "#1DA1F2", // Thêm màu tùy chỉnh
+        secondary: "#79ACFF",
       },
+      spacing: {
+        '128': '32rem', // Thêm giá trị spacing tùy chỉnh
+      },
+      borderRadius: {
+        xl: '1.5rem', // Tùy chỉnh bo góc
+      }
     },
   },
   plugins: [],

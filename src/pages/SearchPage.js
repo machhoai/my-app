@@ -186,7 +186,7 @@ const MovieCards = () => {
     <div>
       <h1 className="font-bold text-3xl" style={{ textAlign: "center", color: "black" }}>Movies</h1>
       <div className="my-4" style={{display:"flex", justifyContent:"center"}}>
-        <input type="text" placeholder="Search movies" style={{ width: "40%", padding: "8px", borderRadius: "12px", border: "1px solid #1f2937", marginBottom: "4px" }} 
+        <input type="text" placeholder="Search movies" className="w-[40%] p-2 rounded-lg border-2 border-gray-300 my-1"
         onChange={(e)=>{
           handleInputChange(e);
           }} />

@@ -185,11 +185,16 @@ const MovieCards = () => {
   return (
     <div>
       <h1 className="font-bold text-3xl" style={{ textAlign: "center", color: "black" }}>Delete Page</h1>
-      <div className="my-4" style={{display:"flex", justifyContent:"center"}}>
-        <input type="text" placeholder="Search movies" style={{ width: "40%", padding: "8px", borderRadius: "12px", border: "1px solid #1f2937", marginBottom: "4px" }} 
-        onChange={(e)=>{
-          handleInputChange(e);
-          }} />
+      
+      <div className="my-4 flex justify-center w-[40%] mx-[auto]">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2"
+          onChange={(e)=>{
+            handleInputChange(e);
+            }}
+          />
+          <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+        </div>
       </div>
 
       <FilterMovie/>

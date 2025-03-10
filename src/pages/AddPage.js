@@ -1,7 +1,6 @@
 import React from "react";
 import movies from "../movies";
 import { Link } from "react-router-dom";
-import { div, g, title } from "framer-motion/client";
 import { useState } from "react";
 const styles = {
   card: {
@@ -68,7 +67,6 @@ let Movies = movies
 
 const MovieCards = () => {
   const [renderMovies, setRenderMovies] = useState(Movies);
-  const [selectedGenres, setSelectedGenres] = useState([]);
   const [searchTerm, setSearchTerm] = useState({
     title: "",
     genre: [],
@@ -177,6 +175,8 @@ const MovieCards = () => {
     }));
   };
 
+  
+
   React.useEffect(() => {
     console.log("searchTerm:", searchTerm);
     setRenderMovies(searchMovies(Movies, searchTerm));
@@ -185,16 +185,22 @@ const MovieCards = () => {
   return (
     <div>
       <h1 className="font-bold text-3xl" style={{ textAlign: "center", color: "black" }}>Add Movies</h1>
-      <div className="my-4" style={{display:"flex", justifyContent:"center"}}>
-        <input type="text" placeholder="Search movies" style={{ width: "40%", padding: "8px", borderRadius: "12px", border: "1px solid #1f2937", marginBottom: "4px" }} 
-        onChange={(e)=>{
-          handleInputChange(e);
-          }} />
+      
+      <div className="my-4 flex justify-center w-[40%] mx-[auto]">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2"
+          onChange={(e)=>{
+            handleInputChange(e);
+            }}
+          />
+          <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+        </div>
       </div>
 
       <FilterMovie/>
 
       <FormAddMovie></FormAddMovie>
+
       {renderMovies.length <= 0 && <h2 style={{ textAlign: "center", color: "black" }}>No movies found</h2>}
 
       <div className="my-4" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "16px" }}>
