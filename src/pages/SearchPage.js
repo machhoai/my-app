@@ -3,6 +3,7 @@ import movies from "../movies";
 import { Link } from "react-router-dom";
 import { div, g, title } from "framer-motion/client";
 import { useState } from "react";
+import { Button } from "react-bootstrap";
 const styles = {
   card: {
     borderRadius: "16px",
@@ -235,14 +236,15 @@ const MovieCards = () => {
                     </span>
                   </div>
                 </Link>
-                <Link className="" to={`/delete-movie/${movie.id}`}>
+                <Button variant="outline-primary">Primary</Button>
+                {/* <Link className="" to={`/delete-movie/${movie.id}`}>
                   <div className="h-10 w-full mt-1 overflow-hidden relative rounded-xl px-6 py-2 bg-rose-600 text-white flex justify-center items-end group/modal-btn">
                     <span
                       className="text-center transition duration-500">
                       Del
                     </span>
                   </div>
-                </Link>
+                </Link> */}
               </div>
             </div>
           );
