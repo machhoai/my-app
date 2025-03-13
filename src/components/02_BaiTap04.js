@@ -1,7 +1,7 @@
 import React from "react";
 import movies from "../movies";
 import { Link } from "react-router-dom";
-import { div, g, title } from "framer-motion/client";
+// import { div, g, title } from "framer-motion/client";
 import { useState } from "react";
 const styles = {
   card: {
@@ -68,7 +68,7 @@ let Movies = movies
 
 const MovieCards = () => {
   const [renderMovies, setRenderMovies] = useState(Movies);
-  const [selectedGenres, setSelectedGenres] = useState([]);
+  // const [selectedGenres, setSelectedGenres] = useState([]);
   const [searchTerm, setSearchTerm] = useState({
     title: "",
     genre: [],

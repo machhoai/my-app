@@ -1,7 +1,7 @@
 import React from "react";
 import movies from "../movies";
 import { Link } from "react-router-dom";
-import { div, g, title } from "framer-motion/client";
+// import { div, g, title } from "framer-motion/client";
 import { useState } from "react";
 const styles = {
   card: {
@@ -90,28 +90,7 @@ const MovieCards = () => {
     console.log(Movies);
     setRenderMovies(Movies);
   };
-
-  const FormAddMovie = () => {
-    return (
-      <div style={styles.formContainer}>
-        <div>
-          <h2 style={{ textAlign: "center", fontSize: "24px", marginBottom: "10px" }}>Add New Movie</h2>
-          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-            <input name="title" placeholder="Title" required />
-            <input name="genre" placeholder="Genre (comma-separated)" required />
-            <input name="director" placeholder="Director" required />
-            <input name="releaseYear" type="number" placeholder="Release Year" required />
-            <input name="duration" type="number" placeholder="Duration (min)" required />
-            <input name="cast" placeholder="Cast (comma-separated)" required />
-            <input name="boxOffice" placeholder="Box Office" required />
-            <input name="image" placeholder="Image URL" required />
-            <button type="submit" style={styles.formButton}>Add Movie</button>
-          </form>
-        </div>
-      </div>
-    );
-  }
-
+  
   const getAllGenres = (movies) => {
     const genres = movies.reduce((acc, movie) => {
       movie.genre.forEach((genre) => {
