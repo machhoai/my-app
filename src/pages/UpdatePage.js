@@ -1,8 +1,10 @@
 import React from "react";
 import movies from "../movies";
 import { Link } from "react-router-dom";
-// import { div, g, title } from "framer-motion/client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import FilterMovie from "../components/FilterBar";
+import Search from "../components/SearchBar";
+import ScrollToTopButton from "../components/BtnScrollToTop";
 const styles = {
   card: {
     borderRadius: "16px",
@@ -68,29 +70,35 @@ let Movies = movies
 
 const MovieCards = () => {
   const [renderMovies, setRenderMovies] = useState(Movies);
-  const [selectedGenres, setSelectedGenres] = useState([]);
+  
   const [searchTerm, setSearchTerm] = useState({
     title: "",
     genre: [],
   });
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newMovie = ({
-      title: e.target.title.value,
-      genre: e.target.genre.value.split(","),
-      director: e.target.director.value,
-      releaseYear: e.target.releaseYear.value,
-      duration: e.target.duration.value,
-      cast: e.target.cast.value.split(","),
-      boxOffice: e.target.boxOffice.value,
-      image: e.target.image.value,
-    });
 
-    Movies = addMovie(Movies, newMovie);
-    console.log(Movies);
-    setRenderMovies(Movies);
+  const moviesPerLoad = 8; // Số phim tải thêm mỗi lần
+  const [visibleMovies, setVisibleMovies] = useState(renderMovies.slice(0, moviesPerLoad));
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+        setTimeout(() => {
+          loadMoreMovies();
+        }, 1000);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [visibleMovies]);
+
+  const loadMoreMovies = () => {
+    if (visibleMovies.length < renderMovies.length) {
+      const nextMovies = renderMovies.slice(visibleMovies.length, visibleMovies.length + moviesPerLoad);
+      setVisibleMovies([...visibleMovies, ...nextMovies]);
+    }
   };
-  
+
   const getAllGenres = (movies) => {
     const genres = movies.reduce((acc, movie) => {
       movie.genre.forEach((genre) => {
@@ -103,85 +111,32 @@ const MovieCards = () => {
     return genres;
   };
 
-  const handleGenreChange = (genre) => {
-    let updatedGenres;
-    if (searchTerm.genre.includes(genre)) {
-      updatedGenres = searchTerm.genre.filter((g) => g !== genre);
-    } else {
-      updatedGenres = [...searchTerm.genre, genre];
-    }
-    setSearchTerm((prev) => ({
-      ...prev,
-      genre: updatedGenres
-    }));
-
-    if (updatedGenres.length > 0) {
-      const filteredMovies = Movies.filter((movie) =>
-        updatedGenres.some((g) => movie.genre.includes(g))
-      );
-      setRenderMovies(filteredMovies);
-    } else {
-      setRenderMovies(Movies);
-    }
+  const handleFilterChange = (selectedGenres) => {
+    setSearchTerm((prev) => ({ ...prev, genre: selectedGenres }));
   };
 
-  const FilterMovie = () => {
-    const allGenres = getAllGenres(Movies);
-    return (
-      <div className="flex gap-2 justify-center flex-wrap w-[40%] mx-[auto]" >
-        {allGenres.map((genre) => (
-          <div key={genre}>
-            <input
-              name={genre}
-              type="checkbox"
-              className="btn-check"
-              id={`btn-check-${genre}`}
-              autoComplete="off"
-              checked={Array.isArray(searchTerm.genre) && searchTerm.genre.includes(genre)}
-              onChange={() => handleGenreChange(genre)}
-            />
-            <label className="btn btn-outline-primary rounded-xl" htmlFor={`btn-check-${genre}`}>
-              {genre}
-            </label>
-          </div>
-        ))}
-      </div>
-    );
-  };
-
-  const handleInputChange = (e) => {
-    setSearchTerm((prev) => ({
-      ...prev,
-      title: e.target.value.toLowerCase(),
-    }));
+  const handleSearchChange = (title) => {
+    setSearchTerm((prev) => ({ ...prev, title: title }));
   };
 
   React.useEffect(() => {
-    console.log("searchTerm:", searchTerm);
     setRenderMovies(searchMovies(Movies, searchTerm));
   }, [searchTerm]);
 
   return (
     <div>
-      <h1 className="font-bold text-3xl" style={{ textAlign: "center", color: "black" }}>Update Page</h1>
-      <div className="my-4 flex justify-center w-[40%] mx-[auto]">
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2"
-          onChange={(e)=>{
-            handleInputChange(e);
-            }}
-          />
-          <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
-        </div>
-      </div>
+      <h1 className="font-bold text-3xl" style={{ textAlign: "center", color: "black" }}>Delete Page</h1>
 
-      <FilterMovie/>
+      <ScrollToTopButton></ScrollToTopButton>
+      
+      <Search onSearchChange={handleSearchChange} />
 
-      {/* <FormAddMovie></FormAddMovie> */}
+      <FilterMovie onFilterChange={handleFilterChange} allGenres={getAllGenres(Movies)} />
+
       {renderMovies.length <= 0 && <h2 style={{ textAlign: "center", color: "black" }}>No movies found</h2>}
 
       <div className="my-4" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "16px" }}>
-        {renderMovies.map((movie) => {
+        {visibleMovies.map((movie) => {
           return (
             <div style={styles.card} key={movie.id}>
               <img style={styles.cardImage} src={`/images/${movie.image}`} alt={movie.title} />
@@ -219,18 +174,18 @@ const MovieCards = () => {
                   </div>
                 </Link>
                 <Link className="" to={`/delete-movie/${movie.id}`}>
-                  <div className="h-10 w-full mt-1 overflow-hidden relative rounded-xl px-6 py-2 bg-rose-600 text-white flex justify-center items-end group/modal-btn">
-                    <span
-                      className="text-center transition duration-500">
-                      Del
-                    </span>
-                  </div>
+                  <button type="button" class="btn btn-outline-danger rounded-xl mt-1 h-10 px-4">Del</button>
                 </Link>
               </div>
             </div>
           );
         })}
       </div>
+      {visibleMovies.length < movies.length && (
+        <div className="text-center my-4">
+          <span className="text-gray-500">Loading more movies...</span>
+        </div>
+      )}
     </div>
   );
 };
@@ -242,17 +197,7 @@ const searchMovies = (movies, searchTerm) => {
         (searchTerm.genre.length > 0 ? searchTerm.genre.some((g) => movie.genre.includes(g)) : true)
       )
     : movies;
-
-  console.log("filteredMovies:", filteredMovies);
-  
-
   return filteredMovies;
 }
-
-const addMovie = (movies, newMovie) => {
-  const updatedMovies = [...movies, newMovie];
-  return updatedMovies;
-}
-
 
 export default MovieCards;

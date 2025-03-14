@@ -73,44 +73,6 @@ const MovieCards = () => {
     title: "",
     genre: [],
   });
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newMovie = ({
-      title: e.target.title.value,
-      genre: e.target.genre.value.split(","),
-      director: e.target.director.value,
-      releaseYear: e.target.releaseYear.value,
-      duration: e.target.duration.value,
-      cast: e.target.cast.value.split(","),
-      boxOffice: e.target.boxOffice.value,
-      image: e.target.image.value,
-    });
-
-    Movies = addMovie(Movies, newMovie);
-    console.log(Movies);
-    setRenderMovies(Movies);
-  };
-
-  const FormAddMovie = () => {
-    return (
-      <div style={styles.formContainer}>
-        <div>
-          <h2 style={{ textAlign: "center", fontSize: "24px", marginBottom: "10px" }}>Add New Movie</h2>
-          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-            <input name="title" placeholder="Title" required />
-            <input name="genre" placeholder="Genre (comma-separated)" required />
-            <input name="director" placeholder="Director" required />
-            <input name="releaseYear" type="number" placeholder="Release Year" required />
-            <input name="duration" type="number" placeholder="Duration (min)" required />
-            <input name="cast" placeholder="Cast (comma-separated)" required />
-            <input name="boxOffice" placeholder="Box Office" required />
-            <input name="image" placeholder="Image URL" required />
-            <button type="submit" style={styles.formButton}>Add Movie</button>
-          </form>
-        </div>
-      </div>
-    );
-  }
 
   const getAllGenres = (movies) => {
     const genres = movies.reduce((acc, movie) => {
@@ -270,11 +232,5 @@ const searchMovies = (movies, searchTerm) => {
 
   return filteredMovies;
 }
-
-const addMovie = (movies, newMovie) => {
-  const updatedMovies = [...movies, newMovie];
-  return updatedMovies;
-}
-
 
 export default MovieCards;
