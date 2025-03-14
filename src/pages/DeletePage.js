@@ -18,12 +18,12 @@ const styles = {
     padding: "16px",
     color: "white",
     display: "grid",
-    gridTemplateRows: "10rem 5rem auto auto",
+    gridTemplateRows: "22rem 5rem auto auto",
   },
   cardImage: {
-    height: "10rem",
+    height: "22rem",
     width: "100%",
-    objectFit: "cover",
+    objectFit: "fit",
     borderRadius: "8px",
   },
   cardTitle: {
@@ -32,7 +32,6 @@ const styles = {
     marginTop: "12px",
   },
   movieDetails: {
-    marginTop: "12px",
     fontSize: "0.875rem",
     color: "#d4d4d8",
   },
@@ -123,6 +122,10 @@ const MovieCards = () => {
     setRenderMovies(searchMovies(Movies, searchTerm));
   }, [searchTerm]);
 
+  React.useEffect(() => {
+      setVisibleMovies(renderMovies.slice(0, moviesPerLoad));
+  }, [renderMovies]); // Cập nhật visibleMovies khi renderMovies thay đổi
+
   return (
     <div>
       <h1 className="font-bold text-3xl" style={{ textAlign: "center", color: "black" }}>Delete Page</h1>
@@ -141,14 +144,13 @@ const MovieCards = () => {
             <div style={styles.card} key={movie.id}>
               <img style={styles.cardImage} src={`/images/${movie.image}`} alt={movie.title} />
               <h2 style={styles.cardTitle}>{movie.title}</h2>
-              {/* <p style={styles.cardDescription}>{movie.description}</p> */}
               <div style={styles.movieDetails}>
-                <p><strong>Director:</strong> {movie.director}</p>
+                {/* <p><strong>Director:</strong> {movie.director}</p> */}
                 <p><strong>Genre:</strong> {movie.genre.join(", ")}</p>
                 <p><strong>Cast:</strong> {movie.cast.join(", ")}</p>
                 <p><strong>Release Year:</strong> {movie.releaseYear}</p>
-                <p><strong>Duration:</strong> {movie.duration} minutes</p>
-                <p><strong>Box Office:</strong> {movie.boxOffice}</p>
+                {/* <p><strong>Duration:</strong> {movie.duration} minutes</p> */}
+                {/* <p><strong>Box Office:</strong> {movie.boxOffice}</p> */}
               </div>
               <div style={{display:"flex", justifyContent:"end", alignItems:"end"}}>
                 <Link className="w-full" to={`/movies/${movie.id}`}>
@@ -181,7 +183,7 @@ const MovieCards = () => {
           );
         })}
       </div>
-      {visibleMovies.length < movies.length && (
+      {visibleMovies.length < movies.length && visibleMovies.length > 0 && (
         <div className="text-center my-4">
           <span className="text-gray-500">Loading more movies...</span>
         </div>
