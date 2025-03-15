@@ -16,7 +16,7 @@
     "router": "^1.3.8",
     "tailwind-merge": "^2.6.0"
   },
-  "homepage": "https://machhoai.github.io/my-app",
+  "homepage": ".",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
