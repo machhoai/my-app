@@ -17,10 +17,10 @@ const styles = {
     padding: "16px",
     color: "white",
     display: "grid",
-    gridTemplateRows: "10rem 5rem auto auto",
+    gridTemplateRows: "20rem 5rem auto auto",
   },
   cardImage: {
-    height: "10rem",
+    height: "20rem",
     width: "100%",
     objectFit: "cover",
     borderRadius: "8px",
@@ -74,6 +74,7 @@ const MovieCards = () => {
     title: "",
     genre: [],
   });
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const newMovie = ({
@@ -205,14 +206,14 @@ const MovieCards = () => {
               <img style={styles.cardImage} src={`/images/${movie.image}`} alt={movie.title} />
               <h2 style={styles.cardTitle}>{movie.title}</h2>
               {/* <p style={styles.cardDescription}>{movie.description}</p> */}
-              <div style={styles.movieDetails}>
+              {/* <div style={styles.movieDetails}>
                 <p><strong>Director:</strong> {movie.director}</p>
                 <p><strong>Genre:</strong> {movie.genre.join(", ")}</p>
                 <p><strong>Cast:</strong> {movie.cast.join(", ")}</p>
                 <p><strong>Release Year:</strong> {movie.releaseYear}</p>
                 <p><strong>Duration:</strong> {movie.duration} minutes</p>
                 <p><strong>Box Office:</strong> {movie.boxOffice}</p>
-              </div>
+              </div> */}
               <div style={{display:"flex", justifyContent:"end", alignItems:"end"}}>
                 <Link className="w-full" to={`/movies/${movie.id}`}>
                   <div className="h-10 w-full mt-4 overflow-hidden relative rounded-xl px-6 py-2 bg-white text-black flex justify-center items-end group/modal-btn">
@@ -236,7 +237,7 @@ const MovieCards = () => {
                     </span>
                   </div>
                 </Link>
-                <Button variant="outline-primary">Primary</Button>
+                <Button variant="outline-danger" className="h-10 mt-1 rounded-xl">Delete</Button>
                 {/* <Link className="" to={`/delete-movie/${movie.id}`}>
                   <div className="h-10 w-full mt-1 overflow-hidden relative rounded-xl px-6 py-2 bg-rose-600 text-white flex justify-center items-end group/modal-btn">
                     <span

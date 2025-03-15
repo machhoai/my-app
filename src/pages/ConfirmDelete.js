@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import movies from "../movies";
 import Button from 'react-bootstrap/Button';
 
@@ -14,6 +14,7 @@ const MovieDetail = () => {
   
   return (
     <div>
+        <button type="button" class="btn btn-outline-light text-black absolute">Back</button>
         <h1 className="text-3xl text-center font-bold mb-6">Confirm to delete this movie?</h1>
         <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-1 flex">
             <img src={`/images/${movie.image}`} alt={movie.title} className="w-full rounded-lg" />
@@ -27,7 +28,7 @@ const MovieDetail = () => {
                 <p className="mt-2"><strong>Cast:</strong> {movie.cast.join(", ")}</p>
                 <div className="w-full flex gap-2 mt-10">
                     <Button onClick={() => window.history.back()} className="w-full" variant="secondary">Cancle</Button>
-                    <Button onClick={() => alert("Success! Movie is deleted")} className="w-full" variant="outline-danger">Danger</Button>
+                    <Button onClick={() => alert("Success! Movie is deleted")} className="w-full" variant="outline-danger">Delete</Button>
                 </div>
             </div>
         </div>
