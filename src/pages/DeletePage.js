@@ -176,7 +176,7 @@ const MovieCards = () => {
                   </div>
                 </Link>
                 <Link className="" to={`/delete-movie/${movie.id}`}>
-                  <button type="button" class="btn btn-outline-danger rounded-xl mt-1 h-10 px-4">Del</button>
+                  <button type="button" class="btn btn-outline-danger !rounded-xl !mt-1 !h-10 !px-4">Del</button>
                 </Link>
               </div>
             </div>
