@@ -1,7 +1,6 @@
 import React from "react";
-import movies from "../movies";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 const styles = {
   card: {
     borderRadius: "16px",
@@ -63,7 +62,7 @@ const styles = {
     cursor: "pointer",
   }
 };
-let Movies = movies
+let Movies = [];
 
 const MovieCards = () => {
   const [renderMovies, setRenderMovies] = useState(Movies);
@@ -71,6 +70,25 @@ const MovieCards = () => {
     title: "",
     genre: [],
   });
+
+  useEffect(() => {
+      fetch("http://localhost:8000/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }) // Fetch data from the server
+        .then((response) => response.json())  // Parse the JSON data
+        .then((data) => {                   
+          console.log(data.data);
+          Movies = data.data;
+          setRenderMovies(data.data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const newMovie = ({
@@ -83,10 +101,24 @@ const MovieCards = () => {
       boxOffice: e.target.boxOffice.value,
       image: e.target.image.value,
     });
-
-    Movies = addMovie(Movies, newMovie);
-    setRenderMovies(Movies);
-    return (alert("Add movie successfully!"));
+    console.log('im here');
+    fetch("http://localhost:8000/addMovie", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({movie:newMovie})
+    }) // Fetch data from the server
+      .then((response) => response.json())  // Parse the JSON data
+      .then((data) => {                   
+        console.log(data.data);
+        Movies = data.data;
+        setRenderMovies(data.data);
+        alert("Add movie successfully!");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   const FormAddMovie = () => {
@@ -270,11 +302,6 @@ const searchMovies = (movies, searchTerm) => {
   
 
   return filteredMovies;
-}
-
-const addMovie = (movies, newMovie) => {
-  const updatedMovies = [...movies, newMovie];
-  return updatedMovies;
 }
 
 
