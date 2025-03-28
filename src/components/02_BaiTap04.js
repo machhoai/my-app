@@ -1,8 +1,8 @@
 import React from "react";
-import movies from "../movies";
+// import movies from "../movies";
 import { Link } from "react-router-dom";
 // import { div, g, title } from "framer-motion/client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 const styles = {
   card: {
     borderRadius: "16px",
@@ -64,15 +64,33 @@ const styles = {
     cursor: "pointer",
   }
 };
-let Movies = movies
+let Movies = []
 
 const MovieCards = () => {
-  const [renderMovies, setRenderMovies] = useState(Movies);
+  const [renderMovies, setRenderMovies] = useState([]);
   // const [selectedGenres, setSelectedGenres] = useState([]);
   const [searchTerm, setSearchTerm] = useState({
     title: "",
     genre: [],
   });
+
+  useEffect(() => {
+    fetch("http://localhost:8000/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }) // Fetch data from the server
+      .then((response) => response.json())  // Parse the JSON data
+      .then((data) => {                   
+        console.log(data.data);
+        Movies = data.data;
+        setRenderMovies(data.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, []);
 
   const getAllGenres = (movies) => {
     const genres = movies.reduce((acc, movie) => {
@@ -147,19 +165,19 @@ const MovieCards = () => {
   return (
     <div>
       <h1 className="font-bold text-3xl" style={{ textAlign: "center", color: "black" }}>Movies</h1>
-      
+
       <div className="my-4 flex justify-center w-[40%] mx-[auto]">
         <div class="input-group mb-3">
           <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2"
-          onChange={(e)=>{
-            handleInputChange(e);
+            onChange={(e) => {
+              handleInputChange(e);
             }}
           />
           <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
         </div>
       </div>
 
-      <FilterMovie/>
+      <FilterMovie />
 
       {/* <FormAddMovie></FormAddMovie> */}
       {renderMovies.length <= 0 && <h2 style={{ textAlign: "center", color: "black" }}>No movies found</h2>}
@@ -179,7 +197,7 @@ const MovieCards = () => {
                 <p><strong>Duration:</strong> {movie.duration} minutes</p>
                 <p><strong>Box Office:</strong> {movie.boxOffice}</p>
               </div>
-              <div style={{display:"flex", justifyContent:"end", alignItems:"end"}}>
+              <div style={{ display: "flex", justifyContent: "end", alignItems: "end" }}>
                 <Link className="w-full" to={`/movies/${movie.id}`}>
                   <div className="h-10 w-full mt-4 overflow-hidden relative rounded-xl px-6 py-2 bg-white text-black flex justify-center items-end group/modal-btn">
                     <span
@@ -222,13 +240,13 @@ const MovieCards = () => {
 const searchMovies = (movies, searchTerm) => {
   const filteredMovies = searchTerm.title || searchTerm.genre.length > 0
     ? movies.filter((movie) =>
-        (searchTerm.title ? movie.title.toLowerCase().includes(searchTerm.title) : true) &&
-        (searchTerm.genre.length > 0 ? searchTerm.genre.some((g) => movie.genre.includes(g)) : true)
-      )
+      (searchTerm.title ? movie.title.toLowerCase().includes(searchTerm.title) : true) &&
+      (searchTerm.genre.length > 0 ? searchTerm.genre.some((g) => movie.genre.includes(g)) : true)
+    )
     : movies;
 
   console.log("filteredMovies:", filteredMovies);
-  
+
 
   return filteredMovies;
 }

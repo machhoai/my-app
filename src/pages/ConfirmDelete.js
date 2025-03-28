@@ -12,6 +12,24 @@ const MovieDetail = () => {
 
   console.log(movie);
   
+  const handleDelete = () => {
+    fetch("http://localhost:8000/delete", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: movie.id }),
+    }) // Fetch data from the server
+      .then((response) => response.json())  // Parse the JSON data
+      .then((data) => {                   
+        alert("Success! Movie is deleted")
+        window.history.back()
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
   return (
     <div>
         <button type="button" class="btn btn-outline-light text-black absolute">Back</button>
@@ -28,7 +46,7 @@ const MovieDetail = () => {
                 <p className="mt-2"><strong>Cast:</strong> {movie.cast.join(", ")}</p>
                 <div className="w-full flex gap-2 mt-10">
                     <Button onClick={() => window.history.back()} className="w-full" variant="secondary">Cancle</Button>
-                    <Button onClick={() => alert("Success! Movie is deleted")} className="w-full" variant="outline-danger">Delete</Button>
+                    <Button onClick={() => handleDelete()} className="w-full" variant="outline-danger">Delete</Button>
                 </div>
             </div>
         </div>
