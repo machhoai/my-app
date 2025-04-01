@@ -35,7 +35,7 @@ const MovieDetail = () => {
         <button type="button" class="btn btn-outline-light text-black absolute">Back</button>
         <h1 className="text-3xl text-center font-bold mb-6">Confirm to delete this movie?</h1>
         <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-1 flex">
-            <img src={`/images/${movie.image}`} alt={movie.title} className="w-full rounded-lg" />
+            <img src={`/images/${movie.image}`} alt={movie.title} className="w-1/2 rounded-lg" />
             <div className="mx-2 w-[100%]">
                 <h1 className="text-3xl font-bold mt-4">{movie.title}</h1>
                 <p className="text-gray-700 text-lg mt-2">Directed by {movie.director}</p>
