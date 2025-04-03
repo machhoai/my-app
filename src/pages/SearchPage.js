@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import movies from "../movies";
 import { Link } from "react-router-dom";
-import { div, g, title } from "framer-motion/client";
+import { div, g, p, title } from "framer-motion/client";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
 const styles = {
@@ -65,15 +65,37 @@ const styles = {
     cursor: "pointer",
   }
 };
-let Movies = movies
 
 const MovieCards = () => {
-  const [renderMovies, setRenderMovies] = useState(Movies);
-  const [selectedGenres, setSelectedGenres] = useState([]);
+  // const [selectedGenres, setSelectedGenres] = useState([]);
+  const [Movies, setMovies] = useState([]);
+  const [renderMovies, setRenderMovies] = useState([]);
   const [searchTerm, setSearchTerm] = useState({
     title: "",
     genre: [],
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchedMovies = await fetchMovies();
+      setMovies(fetchedMovies);  // Lưu dữ liệu gốc vào Movies
+      setRenderMovies(fetchedMovies);  // Hiển thị toàn bộ phim ban đầu
+    };
+    
+    fetchData(); // Gọi hàm fetchData để tải dữ liệu
+  }, []);
+
+const fetchMovies = async () => {
+  try {
+    const response = await fetch("http://localhost:5000/api/movies/");
+    const data = await response.json();
+    console.log(data);
+    return data || [];
+  } catch (error) {
+    console.error("Lỗi tải dữ liệu:", error);
+    return []; // Trả về một mảng rỗng nếu có lỗi
+  }
+};
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -89,7 +111,6 @@ const MovieCards = () => {
     });
 
     Movies = addMovie(Movies, newMovie);
-    console.log(Movies);
     setRenderMovies(Movies);
   };
 
@@ -186,7 +207,7 @@ const MovieCards = () => {
 
   return (
     <div>
-      <h1 className="font-bold text-3xl" style={{ textAlign: "center", color: "black" }}>Movies</h1>
+      <h1 className="font-bold text-3xl" style={{ textAlign: "center", color: "black" }}>Search Movies</h1>
       <div className="my-4" style={{display:"flex", justifyContent:"center"}}>
         <input type="text" placeholder="Search movies" className="w-[40%] p-2 rounded-lg border-2 border-gray-300 my-1"
         onChange={(e)=>{
@@ -200,56 +221,62 @@ const MovieCards = () => {
       {renderMovies.length <= 0 && <h2 style={{ textAlign: "center", color: "black" }}>No movies found</h2>}
 
       <div className="my-4" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "16px" }}>
-        {renderMovies.map((movie) => {
-          return (
-            <div style={styles.card} key={movie.id}>
-              <img style={styles.cardImage} src={`/images/${movie.image}`} alt={movie.title} />
-              <h2 style={styles.cardTitle}>{movie.title}</h2>
-              {/* <p style={styles.cardDescription}>{movie.description}</p> */}
-              {/* <div style={styles.movieDetails}>
-                <p><strong>Director:</strong> {movie.director}</p>
-                <p><strong>Genre:</strong> {movie.genre.join(", ")}</p>
-                <p><strong>Cast:</strong> {movie.cast.join(", ")}</p>
-                <p><strong>Release Year:</strong> {movie.releaseYear}</p>
-                <p><strong>Duration:</strong> {movie.duration} minutes</p>
-                <p><strong>Box Office:</strong> {movie.boxOffice}</p>
-              </div> */}
-              <div style={{display:"flex", justifyContent:"end", alignItems:"end"}}>
-                <Link className="w-full" to={`/movies/${movie.id}`}>
-                  <div className="h-10 w-full mt-4 overflow-hidden relative rounded-xl px-6 py-2 bg-white text-black flex justify-center items-end group/modal-btn">
-                    <span
-                      className="group-hover/modal-btn:translate-x-52 text-center transition duration-500">
-                      Play now
-                    </span>
-                    <div
-                      className=" -translate-x-52 group-hover/modal-btn:translate-x-0 flex items-center justify-center absolute inset-0 transition duration-500 text-white z-20">
-                      🍿
+        {renderMovies.length == 0 ?
+          (""):
+          (renderMovies.map((movie) => {
+            return (
+              <div style={styles.card} key={movie.id}>
+                <img style={styles.cardImage} src={`/images/${movie.image}`} alt={movie.title} />
+                <h2 style={styles.cardTitle}>{movie.title}</h2>
+                {/* <p style={styles.cardDescription}>{movie.description}</p> */}
+                <div style={styles.movieDetails}>
+                  <p><strong>Director:</strong> {movie.director}</p>
+                  <p><strong>Genre:</strong> {movie.genre.join(", ")}</p>
+                  <p><strong>Cast:</strong> {movie.cast.join(", ")}</p>
+                  <p><strong>Release Year:</strong> {movie.releaseYear}</p>
+                  <p><strong>Duration:</strong> {movie.duration} minutes</p>
+                  <p><strong>Box Office:</strong> {movie.boxOffice}</p>
+                </div>
+                <div style={{display:"flex", justifyContent:"end", alignItems:"end"}}>
+                  <Link className="w-full" to={`/movies/${movie.id}`}>
+                    <div className="h-10 w-full mt-4 overflow-hidden relative rounded-xl px-6 py-2 bg-white text-black flex justify-center items-end group/modal-btn">
+                      <span
+                        className="group-hover/modal-btn:translate-x-52 text-center transition duration-500">
+                        Play now
+                      </span>
+                      <div
+                        className=" -translate-x-52 group-hover/modal-btn:translate-x-0 flex items-center justify-center absolute inset-0 transition duration-500 text-white z-20">
+                        🍿
+                      </div>
                     </div>
-                  </div>
-                </Link>
+                  </Link>
+                </div>
+                <div className="flex w-full gap-1">
+                  <Link className="w-full" to={`/update-movie/${movie.id}`}>
+                    <div className="h-10 w-full mt-1 overflow-hidden relative rounded-xl px-6 py-2 bg-cyan-700 text-white flex justify-center items-end group/modal-btn">
+                      <span
+                        className="text-center transition duration-500">
+                        Edit
+                      </span>
+                    </div>
+                  </Link>
+                  <Button variant="outline-danger" className="h-10 mt-1 rounded-xl">Delete</Button>
+                  {/* <Link className="" to={`/delete-movie/${movie.id}`}>
+                    <div className="h-10 w-full mt-1 overflow-hidden relative rounded-xl px-6 py-2 bg-rose-600 text-white flex justify-center items-end group/modal-btn">
+                      <span
+                        className="text-center transition duration-500">
+                        Del
+                      </span>
+                    </div>
+                  </Link> */}
+
+                    <p class="text-base md:text-lg lg:text-xl">Responsive Text</p>
+
+                </div>
               </div>
-              <div className="flex w-full gap-1">
-                <Link className="w-full" to={`/update-movie/${movie.id}`}>
-                  <div className="h-10 w-full mt-1 overflow-hidden relative rounded-xl px-6 py-2 bg-cyan-700 text-white flex justify-center items-end group/modal-btn">
-                    <span
-                      className="text-center transition duration-500">
-                      Edit
-                    </span>
-                  </div>
-                </Link>
-                <Button variant="outline-danger" className="h-10 mt-1 rounded-xl">Delete</Button>
-                {/* <Link className="" to={`/delete-movie/${movie.id}`}>
-                  <div className="h-10 w-full mt-1 overflow-hidden relative rounded-xl px-6 py-2 bg-rose-600 text-white flex justify-center items-end group/modal-btn">
-                    <span
-                      className="text-center transition duration-500">
-                      Del
-                    </span>
-                  </div>
-                </Link> */}
-              </div>
-            </div>
-          );
-        })}
+            );
+          }))
+        }
       </div>
     </div>
   );
